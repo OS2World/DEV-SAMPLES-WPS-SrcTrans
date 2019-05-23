@@ -7,7 +7,9 @@ LICENSE
 
 COMPILE TOOLS
 ===============
-* 
+* LINK386
+* sc
+* icc
  
 AUTHORS
 ===============
