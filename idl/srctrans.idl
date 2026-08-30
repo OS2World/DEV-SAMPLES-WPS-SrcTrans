@@ -1,0 +1,72 @@
+/****************************** Module Header ******************************\
+ *
+ *  Source render drag/drop sample
+ *
+ *  Class:  SrcTransient : WPTransient
+ *          M_SrcTransient : M_WPTransient
+ *
+ *  Author: Andrew Clinch, January 1994
+ *  Open Watcom port: 2026-08-29
+ *
+\***************************************************************************/
+
+#include <wptrans.idl>
+
+interface M_SrcTransient;
+
+interface SrcTransient : WPTransient
+{
+#ifdef __SOMIDL__
+    implementation
+    {
+        functionprefix = src_;
+        metaclass     = M_SrcTransient;
+        majorversion  = 1;
+        minorversion  = 1;
+        dllname       = "srctrans.dll";
+        callstyle     = oidl;
+
+        override: wpFormatDragItem;
+
+        /* Note: sc does NOT interpret \n in passthru strings -- it adds its
+           own newline after each quoted segment. Do NOT use \n here. */
+        passthru C_xih_before =
+            "#define INCL_WIN"
+            "#define INCL_DOS"
+            "#define INCL_GPIBITMAPS"
+            "#define INCL_DOSERRORS"
+            "#include <os2.h>"
+            "#include <string.h>"
+            "using namespace std;"
+            "#define INCL_WPCLASS"
+            "#define INCL_WPFOLDER"
+            "#include <pmwp.h>"
+            "#include <wpfolder.xh>"
+            "#include \"srctrans.ph\"";
+
+        passthru C_xih_after =
+            "typedef struct _DRAGSTRUCT {"
+            "    USHORT        cb;"
+            "    SrcTransient *somSelf;"
+            "} DRAGSTRUCT;"
+            "typedef DRAGSTRUCT *PDRAGSTRUCT;";
+    };
+#endif
+};
+
+interface M_SrcTransient : M_WPTransient
+{
+    HMODULE clsQueryModuleHandle();
+
+#ifdef __SOMIDL__
+    implementation
+    {
+        releaseorder: clsQueryModuleHandle;
+        functionprefix = srcM_;
+        dllname        = "srctrans.dll";
+        callstyle      = oidl;
+
+        override: wpclsQueryIconData;
+    };
+#endif
+};

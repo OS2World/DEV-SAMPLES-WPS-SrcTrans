@@ -77,7 +77,7 @@ SOM_Scope BOOL   SOMLINK src_wpFormatDragItem(SrcTransient *somSelf,
         }
 
     // Set up the window data structure
-    pDragData = (PDRAGSTRUCT) somSelf->wpAllocMem(sizeof(*pDragData), FALSE);
+    pDragData = (PDRAGSTRUCT) somSelf->wpAllocMem(sizeof(*pDragData), NULL);
     pDragData->somSelf = somSelf;
     pDragData->cb = sizeof(*pDragData);
 
@@ -226,16 +226,16 @@ MRESULT EXPENTRY DragWndProc( HWND hwnd, ULONG msg,
             // me some info on CIS - 100241,1425.  I do a lot of that stuff
             // and would appreciate it if anyone could tell me how to do
             // it "cleaner"
-            cbLength = DrgQueryStrName(pDragTrans->hstrRenderToName, cbLength, pBuffer);
+            cbLength = DrgQueryStrName(pDragTrans->hstrRenderToName, 0, NULL);
             pBuffer = new char[cbLength+1];
-            cbLength = DrgQueryStrName(pDragTrans->hstrRenderToName, cbLength, pBuffer);
+            cbLength = DrgQueryStrName(pDragTrans->hstrRenderToName, cbLength+1, pBuffer);
             pBuffer[cbLength] = '\0';
             pBufferEnd = strrchr(pBuffer, '\\');
             pBufferEnd[0] = '\0';
             somSelfClass = (M_SrcTransient *)pDragData->somSelf->somGetClass();
             pDragData->somSelf->wpCopyObject(
-                somSelfClass->wpclsQueryFolder(pBuffer, FALSE), FALSE);
-            delete pBuffer;
+                (WPFolder *)somSelfClass->wpclsQueryFolder(pBuffer, FALSE), FALSE);
+            delete[] pBuffer;
             break;
 
     }   /* end switch(msg) */

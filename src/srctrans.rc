@@ -12,7 +12,6 @@
 //
 
 #include <os2.h>
-#include <wpobject.h>
-#include "srctrans.ph"
+#include "srctrans_res.h"
 
 ICON ID_ICON "srctrans.ico"
