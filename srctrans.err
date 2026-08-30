@@ -1,2 +1,0 @@
-src\srctrans.cpp(108): Warning! W014: col(1) no reference to symbol 'pszRealName'
-src\srctrans.cpp(56): Note! N392: col(13) definition: 'char * pszRealName' in 'unsigned long syscall src_wpFormatDragItem( SrcTransient *, _DRAGITEM * )'
